@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+        input {
+            width: 100%;
+        }
+        button {
+            width: 33%;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<input type="number" value="" id="inputField">
+<button>1</button>
+<button>2</button>
+<button>3</button>
+<button>4</button>
+<button>5</button>
+<button>6</button>
+<button>7</button>
+<button>8</button>
+<button>9</button>
+<button>0</button>
+<button>+</button>
+<button>-</button>
+<button>*</button>
+<button>/</button>
+<button>=</button>
+
+<script>
+  // This is a comment
+
+  // Define variables with var.
+  var inputField = document.getElementById("inputField");
+
+  // get elements from the document
+  var buttons = document.getElementsByTagName("button");
+
+
+  // this defines an array
+  var enteredNumbers = [];
+
+  // This is a loop
+  for (var i = 0; i < buttons.length; i++) {
+    // buttons is an array
+    // this adds a listener for a click event to each button
+    // that then calls a function
+    buttons[i].addEventListener("click", function() {
+      handleClick(this);
+    });
+  }
+
+  function handleClick(button) {
+    if (button.innerHTML === "+" || button.innerHTML === "-" || button.innerHTML === "*" || button.innerHTML === "/") {
+      // you can push elements to an array
+      enteredNumbers.push(inputField.value);
+      enteredNumbers.push(button.innerHTML);
+      inputField.value = "";
+      // this logs data to the console, handy for debugging
+      console.log(enteredNumbers);
+    } else if (button.innerHTML === "=") {
+      enteredNumbers.push(inputField.value);
+      console.log(enteredNumbers);
+      performCalculation();
+    } else {
+      inputField.value += button.innerHTML;
+    }
+  }
+
+  function performCalculation() {
+    // strings must be converted to integers
+    var result = parseInt(enteredNumbers[0]);
+    for (var i = 1; i < enteredNumbers.length - 1; i++) {
+      // A switch statement is like an if else statement
+      switch (enteredNumbers[i]) {
+        case "+":
+          result += parseInt(enteredNumbers[i + 1]);
+          break;
+        case "-":
+          result -= parseInt(enteredNumbers[i + 1]);
+          break;
+        case "*":
+          result *= parseInt(enteredNumbers[i + 1]);
+          break;
+        case "/":
+          result /= parseInt(enteredNumbers[i + 1]);
+          break;
+        default:
+          break;
+      }
+    }
+    // output the result
+    inputField.value = result;
+  }
+</script>
+</body>
+</html>
