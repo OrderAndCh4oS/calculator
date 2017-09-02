@@ -4,97 +4,126 @@
     <meta charset="UTF-8">
     <title>Calculator</title>
     <style>
-        input {
-            width: 100%;
+        html, body {
+            background-color: gold;
+            padding: 40px;
+            font-size: 21px;
         }
+
+        input {
+            padding: 10px 12px;
+            width: 99%;
+            margin-bottom: 20px;
+            border: 1px solid #000;
+        }
+
         button {
+            background: gold;
+            border: 1px solid #000;
             width: 33%;
+            padding: 10px;
             float: left;
+        }
+
+        button:hover {
+            background-color: black;
+            color: gold;
+            cursor: pointer;
+        }
+
+        input, button {
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .current {
+            height: 30px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-<input type="number" value="" id="inputField">
-<button>1</button>
-<button>2</button>
-<button>3</button>
-<button>4</button>
-<button>5</button>
-<button>6</button>
-<button>7</button>
-<button>8</button>
-<button>9</button>
-<button>0</button>
-<button>+</button>
-<button>-</button>
-<button>*</button>
-<button>/</button>
-<button>=</button>
-
+<div class="wrapper">
+    <div id="currentCalculation" class="current"></div>
+    <input type="number" value="" id="inputField">
+    <div class="buttons">
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>0</button>
+        <button>+</button>
+        <button>-</button>
+        <button>*</button>
+        <button>/</button>
+        <button>=</button>
+    </div>
+</div>
 <script>
-  // This is a comment
+  /* ToDo: Handle precedence of operators */
+  var current = ''
 
-  // Define variables with var.
-  var inputField = document.getElementById("inputField");
+  var inputField = document.getElementById('inputField')
+  var currentCalculation = document.getElementById('currentCalculation')
 
-  // get elements from the document
-  var buttons = document.getElementsByTagName("button");
+  var buttons = document.getElementsByTagName('button')
 
+  var enteredNumbers = []
 
-  // this defines an array
-  var enteredNumbers = [];
-
-  // This is a loop
   for (var i = 0; i < buttons.length; i++) {
-    // buttons is an array
-    // this adds a listener for a click event to each button
-    // that then calls a function
-    buttons[i].addEventListener("click", function() {
-      handleClick(this);
-    });
+    buttons[i].addEventListener('click', function () {
+      handleClick(this)
+    })
   }
 
-  function handleClick(button) {
-    if (button.innerHTML === "+" || button.innerHTML === "-" || button.innerHTML === "*" || button.innerHTML === "/") {
-      // you can push elements to an array
-      enteredNumbers.push(inputField.value);
-      enteredNumbers.push(button.innerHTML);
-      inputField.value = "";
-      // this logs data to the console, handy for debugging
-      console.log(enteredNumbers);
-    } else if (button.innerHTML === "=") {
-      enteredNumbers.push(inputField.value);
-      console.log(enteredNumbers);
-      performCalculation();
+  function handleClick (button) {
+    if (button.innerHTML === '+' || button.innerHTML === '-' || button.innerHTML === '*' || button.innerHTML === '/') {
+      enteredNumbers.push(inputField.value)
+      enteredNumbers.push(button.innerHTML)
+      inputField.value = ''
+      current += ' ' + button.innerHTML + ' '
+      currentCalculation.innerHTML = current
+    } else if (button.innerHTML === '=') {
+      enteredNumbers.push(inputField.value)
+      current = ''
+      performCalculation()
     } else {
-      inputField.value += button.innerHTML;
+      current += button.innerHTML
+      inputField.value += button.innerHTML
+      currentCalculation.innerHTML = current
     }
   }
 
-  function performCalculation() {
-    // strings must be converted to integers
-    var result = parseInt(enteredNumbers[0]);
+  function performCalculation () {
+    var result = parseInt(enteredNumbers[0])
     for (var i = 1; i < enteredNumbers.length - 1; i++) {
-      // A switch statement is like an if else statement
       switch (enteredNumbers[i]) {
-        case "+":
-          result += parseInt(enteredNumbers[i + 1]);
-          break;
-        case "-":
-          result -= parseInt(enteredNumbers[i + 1]);
-          break;
-        case "*":
-          result *= parseInt(enteredNumbers[i + 1]);
-          break;
-        case "/":
-          result /= parseInt(enteredNumbers[i + 1]);
-          break;
+        case '+':
+          result += parseInt(enteredNumbers[i + 1])
+          break
+        case '-':
+          result -= parseInt(enteredNumbers[i + 1])
+          break
+        case '*':
+          result *= parseInt(enteredNumbers[i + 1])
+          break
+        case '/':
+          result /= parseInt(enteredNumbers[i + 1])
+          break
         default:
-          break;
+          break
       }
     }
-    // output the result
-    inputField.value = result;
+    inputField.value = result
   }
 </script>
 </body>
